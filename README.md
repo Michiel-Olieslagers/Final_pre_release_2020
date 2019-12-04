@@ -1,4 +1,5 @@
-#Food Magnate Simulation
+<h1>Food Magnate Simulation</h1>
+
 Food Magnate Simulation is a program that lets the user set up a number of food companies and a
 settlement and see how well each company performs over time.
 
