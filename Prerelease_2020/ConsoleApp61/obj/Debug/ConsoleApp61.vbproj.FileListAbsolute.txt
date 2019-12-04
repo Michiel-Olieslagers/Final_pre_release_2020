@@ -1,0 +1,11 @@
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\bin\Debug\ConsoleApp61.exe.config
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\bin\Debug\ConsoleApp61.exe
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\bin\Debug\ConsoleApp61.pdb
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\bin\Debug\ConsoleApp61.xml
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.vbprojAssemblyReference.cache
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.Resources.resources
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.vbproj.GenerateResource.cache
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.vbproj.CoreCompileInputs.cache
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.exe
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.xml
+C:\Users\Michiel\source\repos\ConsoleApp61\ConsoleApp61\obj\Debug\ConsoleApp61.pdb
