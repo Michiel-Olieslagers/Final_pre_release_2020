@@ -58,6 +58,7 @@
         Console.WriteLine("2. Display details of companies")
         Console.WriteLine("3. Modify company")
         Console.WriteLine("4. Add new company")
+        Console.WriteLine("5. Remove a company") 'added
         Console.WriteLine("6. Advance to next day")
         Console.WriteLine("Q. Quit")
         Console.Write(Environment.NewLine & "Enter your choice: ")
@@ -213,6 +214,25 @@
         Dim NewCompany As New Company(CompanyName, TypeOfCompany, Balance, X, Y, FuelCostPerUnit, BaseCostForDelivery)
         Companies.Add(NewCompany)
     End Sub
+    Public Sub RemoveACompany() 'added 'removes a company 
+        Dim CompanyToRemove As Integer
+        Dim companyName As String
+        Console.WriteLine("What company do you want to remove? Please enter the ID of the company")
+        CompanyToRemove = Console.ReadLine()
+        Dim Output As Integer = 0
+        For Current = 0 To Companies.Count - 1
+            If Companies(Current).GetName() = Companies(CompanyToRemove).GetName() Then
+                companyName = Companies(CompanyToRemove).getName()
+                Companies.RemoveAt(CompanyToRemove)
+                Console.WriteLine(companyName & " has been removed successfully")
+                Output = 1
+                Exit For
+            End If
+        Next
+        If Output = 0 Then
+            Console.WriteLine(companyName & " has not been removed. It does not exist")
+        End If
+    End Sub
 
     Public Function GetIndexOfCompany(ByVal CompanyName As String) As Integer
         Dim Index As Integer = -1
@@ -298,6 +318,8 @@
                     ModifyCompany(Index)
                 Case "4"
                     AddCompany()
+                Case "5" 'added
+                    RemoveACompany()
                 Case "6"
                     ProcessDayEnd()
                 Case "Q"
