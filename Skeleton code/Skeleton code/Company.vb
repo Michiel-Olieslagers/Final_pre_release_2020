@@ -48,7 +48,13 @@ Class Company
     End Function
 
     Public Sub AlterDailyCosts(ByVal Change As Single)
+        Dim oldAmount As Single = DailyCosts
         DailyCosts += Change
+        If DailyCosts > 0 Then
+            'daily cost unchanged
+        Else
+            DailyCosts = 0 'idk it this is the right thing but checking that daily cost isn't negative
+        End If
     End Sub
 
     Public Sub AlterAvgCostPerMeal(ByVal Change As Single)
