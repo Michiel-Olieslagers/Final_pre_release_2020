@@ -181,7 +181,7 @@
                 While Current < Reputations.Count
                     If CompanyRNo < Reputations(Current) Then
                         Companies(Current).AddVisitToNearestOutlet(X, Y)
-                        Current = Reputations.Count
+                        Exit While
                     End If
                     Current += 1
                 End While

@@ -1,4 +1,4 @@
-﻿Module Main
+﻿Module Module1
     Sub Main()
         Randomize()
         Dim ThisSim As New Simulation

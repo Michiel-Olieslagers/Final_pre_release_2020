@@ -13,15 +13,7 @@
 
     Public Function GetDetails() As String
         Dim Details As String
-        Details = "ID: " & ID.ToString()
-        For x = 0 To 10 - Len(ID.ToString())
-            Details &= " "
-        Next
-        Details &= "Coordinates: (" & XCoord.ToString() & ", " & YCoord.ToString() & ")"
-        for x = 0 to 14 - (Len(XCoord.ToString()) + Len(YCoord.ToString()))
-            Details &= " "
-        Next
-        Details &= "Eat out probability: " & ChanceEatOutPerDay.ToString()
+        Details = ID.ToString() & "     Coordinates: (" & XCoord.ToString() & ", " & YCoord.ToString() & ")     Eat out probability: " & ChanceEatOutPerDay.ToString()
         Return Details
     End Function
 

@@ -35,15 +35,6 @@
     Public Sub AddHousehold()
         Dim X, Y As Integer
         GetRandomLocation(X, Y)
-        Dim count As Integer = 0
-        While (count < Households.Count)
-            If (Households(count).getX() = X And Households(count).getY() = Y) Then
-                GetRandomLocation(X, Y)
-                count = 0
-            Else
-                count += 1
-            End If
-        End While
         Dim Temp As New Household(X, Y)
         Households.Add(Temp)
     End Sub
@@ -52,7 +43,6 @@
         Console.WriteLine(Environment.NewLine & "**********************************")
         Console.WriteLine("*** Details of all households: ***")
         Console.WriteLine("**********************************" & Environment.NewLine)
-        Console.WriteLine("Size of settlement: " & XSize & " , " & YSize & Environment.NewLine)
         For Each H In Households
             Console.WriteLine(H.GetDetails())
         Next

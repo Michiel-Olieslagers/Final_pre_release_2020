@@ -1,6 +1,7 @@
 ﻿Class Outlet
     Protected VisitsToday, XCoord, YCoord, Capacity, MaxCapacity As Integer
     Protected DailyCosts As Single
+
     Public Sub New(ByVal XCoord As Integer, ByVal YCoord As Integer, ByVal MaxCapacityBase As Integer)
         Me.XCoord = XCoord
         Me.YCoord = YCoord
@@ -53,23 +54,8 @@
 
     Public Function GetDetails() As String
         Dim Details As String
-        Details = "Coordinates: (" & XCoord.ToString() & ", " & YCoord.ToString() & ")"
-        For x = 0 To 10 - (Len(XCoord.ToString()) + Len(YCoord.ToString()))
-            Details &= " "
-        Next
-        Details &= "Capacity: " & Capacity.ToString()
-        For x = 0 To 6 - Capacity.ToString()
-            Details &= " "
-        Next
-        Details &= "Maximum Capacity: " & MaxCapacity.ToString()
-        For x = 0 To 8 - Len(MaxCapacity.ToString())
-            Details &= " "
-        Next
-        Details &= "Daily Costs: " & DailyCosts.ToString()
-        For x = 0 To 6 - Len(DailyCosts.ToString())
-            Details &= " "
-        Next
-        Details &= "Visits today: " & VisitsToday.ToString()
-            Return Details
+        Details = "Coordinates: (" & XCoord.ToString() & ", " & YCoord.ToString() & ")     Capacity: " & Capacity.ToString() & "      Maximum Capacity: "
+        Details &= MaxCapacity.ToString() & "      Daily Costs: " & DailyCosts.ToString() & "      Visits today: " & VisitsToday.ToString()
+        Return Details
     End Function
 End Class

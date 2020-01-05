@@ -1,11 +1,17 @@
 ﻿Imports System.Math
 Class Company
     Protected Name, Category As String
-    Protected Balance, ReputationScore, AvgCostPerMeal, AvgPricePerMeal, DailyCosts, OutletCost, FuelCostPerUnit, BaseCostOfDelivery As Single
+    Protected Balance, ReputationScore, AvgCostPerMeal, AvgPricePerMeal, DailyCosts, FamilyOutletCost, FastFoodOutletCost, NamedChefOutletCost, FuelCostPerUnit, BaseCostOfDelivery As Single
     Protected Outlets As New ArrayList
-    Protected OutletCapacity As Integer
+    Protected FamilyFoodOutletCapacity, FastFoodOutletCapacity, NamedChefOutletCapacity As Integer
 
     Public Sub New(ByVal Name As String, ByVal Category As String, ByVal Balance As Single, ByVal X As Integer, ByVal Y As Integer, ByVal FuelCostPerUnit As Single, ByVal BaseCostOfDelivery As Single)
+        FamilyOutletCost = 1000
+        FastFoodOutletCost = 2000
+        NamedChefOutletCost = 15000
+        FamilyFoodOutletCapacity = 150
+        FastFoodOutletCapacity = 200
+        NamedChefOutletCapacity = 50
         Me.Name = Name
         Me.Category = Category
         Me.Balance = Balance
@@ -14,20 +20,14 @@ Class Company
         ReputationScore = 100
         DailyCosts = 100
         If Me.Category = "fast food" Then
-            OutletCapacity = 200
-            OutletCost = 2000
             AvgCostPerMeal = 5
             AvgPricePerMeal = 10
             ReputationScore += Rnd() * 10 - 8
         ElseIf Me.Category = "family" Then
-            OutletCapacity = 150
-            OutletCost = 1000
             AvgCostPerMeal = 12
             AvgPricePerMeal = 14
             ReputationScore += Rnd() * 30 - 5
         Else
-            OutletCapacity = 50
-            OutletCost = 15000
             AvgCostPerMeal = 20
             AvgPricePerMeal = 40
             ReputationScore += Rnd() * 50
@@ -86,7 +86,7 @@ Class Company
     Public Function GetDetails() As String
         Dim Details As String = ""
         Details &= "Name: " & Name & Environment.NewLine & "Type of business: " & Category & Environment.NewLine
-        Details &= "Current balance: " & Balance.ToString() & Environment.NewLine & "Outlet opening cost: " & OutletCost & Environment.NewLine & "Average cost per meal: " & AvgCostPerMeal.ToString() & Environment.NewLine
+        Details &= "Current balance: " & Balance.ToString() & Environment.NewLine & "Average cost per meal: " & AvgCostPerMeal.ToString() & Environment.NewLine
         Details &= "Average price per meal: " & AvgPricePerMeal.ToString() & Environment.NewLine & "Daily costs: " & DailyCosts.ToString() & Environment.NewLine
         Details &= "Delivery costs: " & CalculateDeliveryCost().ToString() & Environment.NewLine & "Reputation: " & ReputationScore.ToString() & Environment.NewLine & Environment.NewLine
         Details &= "Number of outlets: " & Outlets.Count.ToString() & Environment.NewLine & "Outlets" & Environment.NewLine
@@ -140,8 +140,18 @@ Class Company
     End Sub
 
     Public Sub OpenOutlet(ByVal X As Integer, ByVal Y As Integer)
-        Balance -= OutletCost
-        Dim NewOutlet As New Outlet(X, Y, OutletCapacity)
+        Dim Capacity As Integer
+        If Category = "fast food" Then
+            Balance -= FastFoodOutletCost
+            Capacity = FastFoodOutletCapacity
+        ElseIf Category = "family" Then
+            Balance -= FamilyOutletCost
+            Capacity = FamilyFoodOutletCapacity
+        Else
+            Balance -= NamedChefOutletCost
+            Capacity = NamedChefOutletCapacity
+        End If
+        Dim NewOutlet As New Outlet(X, Y, Capacity)
         Outlets.Add(NewOutlet)
     End Sub
 
