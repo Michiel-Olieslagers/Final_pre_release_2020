@@ -3,12 +3,12 @@
     Protected NoOfCompanies As Integer
     Protected FuelCostPerUnit, BaseCostForDelivery As Single
     Protected Companies As New ArrayList
-
+    'NOTE: FormatCurrency(CalculateDeliveryCost.ToString, 2) CONVERTS INTO CURRENCY FORMAT
     Public Sub New()
         FuelCostPerUnit = 0.0098
         BaseCostForDelivery = 100
         Dim Choice As String
-        Console.Write("Enter L for a large settlement, anything else for a normal size settlement: ")
+        Console.Write("Enter L for a large settlement, S for a small settlement, anything else for a normal size settlement: ") 'add option for small settlement
         Choice = Console.ReadLine()
         If Choice = "L" Then
             Dim ExtraX, ExtraY, ExtraHouseholds As Integer
@@ -19,6 +19,20 @@
             Console.Write("Enter additional number of households to add to settlement: ")
             ExtraHouseholds = Console.ReadLine()
             SimulationSettlement = New LargeSettlement(ExtraX, ExtraY, ExtraHouseholds)
+        ElseIf Choice = "S" Then 'added else if for small settlement
+            Dim reducexby As Integer = 1001
+            Dim reduceyby As Integer = 1001
+            Dim reducehousingby As Integer = 251
+            While reducexby >= 1000 Or reduceyby >= 1000 Or reducehousingby >= 250
+                Console.WriteLine("X & Y cannot be reduced by more than 999 and Housing cannot be reduced by more than 249.")
+                Console.WriteLine("Please enter how much you would like to reduce the X size by: ")
+                reducexby = Console.ReadLine()
+                Console.WriteLine("Please enter how much you would like to reduce the Y size by: ")
+                reduceyby = Console.ReadLine()
+                Console.WriteLine("Please enter how much you would like to reduce the number of houses by: ")
+                reducehousingby = Console.ReadLine()
+            End While
+            SimulationSettlement = New SmallSettlement(reducexby, reduceyby, reducehousingby)
         Else
             SimulationSettlement = New Settlement()
         End If
@@ -60,10 +74,26 @@
         Console.WriteLine("4. Add new company")
         Console.WriteLine("5. Remove a company") 'added
         Console.WriteLine("6. Advance to next day")
+        Console.WriteLine("7. Change reputation") 'added to change rep of a company
+        Console.WriteLine("8. Process multiple days") 'added to process multiple days
         Console.WriteLine("Q. Quit")
         Console.Write(Environment.NewLine & "Enter your choice: ")
     End Sub
-
+    Public Sub ChangeReputation() 'added to change rep of a company
+        Dim companyName As String
+        Dim index As Integer
+        Dim rate As Char
+        Console.Write("Enter company name: ")
+        companyName = Console.ReadLine()
+        index = GetIndexOfCompany(companyName)
+        Console.WriteLine("How do you rate the company - good(g) or bad(b)?")
+        rate = Console.ReadLine()
+        If (rate = "g") Then
+            Companies(index).AlterReputation(3)
+        Else
+            Companies(index).AlterReputation(-3)
+        End If
+    End Sub
     Private Sub DisplayCompaniesAtDayEnd()
         Dim Details As String
         Console.WriteLine(Environment.NewLine & "**********************")
@@ -89,7 +119,12 @@
         Dim FuelCostChange As Single = (Int(Rnd() * 9) + 1) / 10
         Dim UpOrDown As Integer = Int(Rnd() * 2)
         Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
-        If UpOrDown = 0 Then
+        If UpOrDown = 1 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
+            If Me.Companies(CompanyNo).GetFuelCostPerUnit() < FuelCostChange Then
+                UpOrDown = 0
+            End If
+        End If
+        If UpOrDown = 0 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
             Console.WriteLine("The cost of fuel has gone up by " & FuelCostChange.ToString() & " for " & Companies(CompanyNo).GetName())
         Else
             Console.WriteLine("The cost of fuel has gone down by " & FuelCostChange.ToString() & " for " & Companies(CompanyNo).GetName())
@@ -119,18 +154,18 @@
         If CostToChange = 0 Then
             AmountOfChange = (Int(Rnd() * 19) + 1) / 10
             If UpOrDown = 0 Then
-                Console.WriteLine("The daily costs for " & Companies(CompanyNo).GetName() & " have gone up by " & AmountOfChange.ToString())
+                Console.WriteLine("The daily costs for " & Companies(CompanyNo).GetName() & " have gone up by " & FormatCurrency(AmountOfChange.ToString, 2))
             Else
-                Console.WriteLine("The daily costs for " & Companies(CompanyNo).GetName() & " have gone down by " & AmountOfChange.ToString())
+                Console.WriteLine("The daily costs for " & Companies(CompanyNo).GetName() & " have gone down by " & FormatCurrency(AmountOfChange.ToString, 2))
                 AmountOfChange *= -1
             End If
             Companies(CompanyNo).AlterDailyCosts(AmountOfChange)
         Else
             AmountOfChange = Int((Rnd() * 9) + 1) / 10
             If UpOrDown = 0 Then
-                Console.WriteLine("The average cost of a meal for " & Companies(CompanyNo).GetName() & " has gone up by " & AmountOfChange.ToString())
+                Console.WriteLine("The average cost of a meal for " & Companies(CompanyNo).GetName() & " has gone up by " & FormatCurrency(AmountOfChange.ToString, 2))
             Else
-                Console.WriteLine("The average cost of a meal for " & Companies(CompanyNo).GetName() & " has gone down by " & AmountOfChange.ToString())
+                Console.WriteLine("The average cost of a meal for " & Companies(CompanyNo).GetName() & " has gone down by " & FormatCurrency(AmountOfChange.ToString, 2))
                 AmountOfChange *= -1
             End If
             Companies(CompanyNo).AlterAvgCostPerMeal(AmountOfChange)
@@ -160,11 +195,23 @@
             If EventRanNo >= 0.5 Then
                 ProcessCostChangeEvent()
             End If
+            EventRanNo = Rnd() 'added for power outage event happening
+            If EventRanNo < 0.1 Then 'added for power outage event happening
+                ProcessPowerOutage()
+            End If
+            EventRanNo = Rnd() 'added for end of the world event happening
+            If EventRanNo < 0.1 Then 'added for end of the world event happening
+                Dropworld()
+            End If
         Else
             Console.WriteLine("No events.")
         End If
     End Sub
-
+    Sub Dropworld() 'added for end of the world event happening
+        Console.WriteLine("Darkrai used black hole eclipse. A quadrillion quadrillion joules of energy was released in two seconds. The world is gone")
+        Console.ReadLine()
+        Stop
+    End Sub
     Public Sub ProcessDayEnd()
         Dim TotalReputation As Single = 0
         Dim Reputations As New ArrayList
@@ -193,10 +240,22 @@
     End Sub
 
     Public Sub AddCompany()
+        Dim checkName As Boolean = True 'Added this variable as a condition for your while loop to stop you from continuing with a name already in use
         Dim Balance, X, Y As Integer
         Dim CompanyName, TypeOfCompany As String
-        Console.Write("Enter a name for the company: ")
-        CompanyName = Console.ReadLine()
+        Dim name As String 'Use the name variable as a holder for the name you're checking your chosen name against in the ArrayList
+        While checkName = True 'Add in a while loop to check through the ArrayList of company names to check if the chosen name has already been used
+            Console.Write("Enter a name for the company: ")
+            CompanyName = Console.ReadLine()
+            checkName = False
+            For i = 0 To Me.Companies.Count - 1
+                name = Me.Companies(i).GetName()
+                If CompanyName = name Then
+                    Console.WriteLine("Company name is already in use")
+                    checkName = True
+                End If
+            Next
+        End While
         Console.Write("Enter the starting balance for the company: ")
         Balance = Console.ReadLine()
         Do
@@ -214,24 +273,22 @@
         Dim NewCompany As New Company(CompanyName, TypeOfCompany, Balance, X, Y, FuelCostPerUnit, BaseCostForDelivery)
         Companies.Add(NewCompany)
     End Sub
-    Public Sub RemoveACompany() 'added 'removes a company 
-        Dim CompanyToRemove As Integer
-        Dim companyName As String
-        Console.WriteLine("What company do you want to remove? Please enter the ID of the company")
+    Public Sub RemoveCompany() 'added to remove a company
+        Dim CompanyToRemove As String
+        Dim Index As String
+        Console.WriteLine("Enter the name of the company you would like to remove: ")
         CompanyToRemove = Console.ReadLine()
-        Dim Output As Integer = 0
-        For Current = 0 To Companies.Count - 1
-            If Companies(Current).GetName() = Companies(CompanyToRemove).GetName() Then
-                companyName = Companies(CompanyToRemove).getName()
-                Companies.RemoveAt(CompanyToRemove)
-                Console.WriteLine(companyName & " has been removed successfully")
-                Output = 1
-                Exit For
-            End If
-        Next
-        If Output = 0 Then
-            Console.WriteLine(companyName & " has not been removed. It does not exist")
-        End If
+        Try
+            Index = GetIndexOfCompany(CompanyToRemove)
+            Companies.RemoveAt(Index)
+            Console.WriteLine()
+            Console.WriteLine(CompanyToRemove & " removed!")
+            Console.WriteLine()
+        Catch
+            Console.WriteLine()
+            Console.WriteLine("Company: " & CompanyToRemove & " doesn't exist")
+            Console.WriteLine()
+        End Try
     End Sub
 
     Public Function GetIndexOfCompany(ByVal CompanyName As String) As Integer
@@ -286,7 +343,23 @@
         End If
         Console.WriteLine()
     End Sub
-
+    Public Sub ProcessPowerOutage() 'added for power outage event happening
+        Randomize()
+        Dim noOfDays As Integer = Int((Rnd() * 7) + 1)
+        Dim moneyLost As Integer = Int((Rnd() * 1000) + 1)
+        Dim totalLoss As Integer
+        Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
+        Console.WriteLine(Environment.NewLine & Companies(CompanyNo).GetName() & " is experiencing a powercut:")
+        Console.WriteLine(Environment.NewLine & Companies(CompanyNo).GetName() & ". Balance: £" & Companies(CompanyNo).getBalance())
+        For i = 1 To noOfDays
+            Companies(CompanyNo).alterbalance(moneyLost)
+            totalLoss += moneyLost
+            Console.WriteLine(Environment.NewLine & "Hour: " & i)
+            Console.WriteLine(Companies(CompanyNo).GetName() & " has lost £" & totalLoss & " in " & i & " hours.")
+            Console.WriteLine(Companies(CompanyNo).GetName() & ". Balance: £" & Companies(CompanyNo).getBalance())
+        Next
+        Console.WriteLine(Environment.NewLine & Companies(CompanyNo).GetName() & " has lost £" & totalLoss & " in total." & Environment.NewLine)
+    End Sub
     Public Sub DisplayCompanies()
         Console.WriteLine(Environment.NewLine & "*********************************")
         Console.WriteLine("*** Details of all companies: ***")
@@ -296,8 +369,22 @@
         Next
         Console.WriteLine()
     End Sub
-
+    Public Sub ProcessMultipleDays() 'added to process multiple days in advance
+        Dim noOfDays As Integer
+        Try
+            Console.Write("How many days do you want to advance? ")
+            noOfDays = Console.ReadLine
+            For i = 1 To noOfDays
+                ProcessDayEnd()
+            Next
+        Catch ex As Exception
+            Console.WriteLine("")
+            Console.WriteLine("Invalid Input")
+            Console.WriteLine("")
+        End Try
+    End Sub
     Public Sub Run()
+        Dim daysCount As Integer = 0 'Add new variable that will be the counter of days
         Dim Choice As String = ""
         Dim Index As Integer
         While Choice <> "Q"
@@ -319,9 +406,15 @@
                 Case "4"
                     AddCompany()
                 Case "5" 'added
-                    RemoveACompany()
+                    RemoveCompany()
                 Case "6"
                     ProcessDayEnd()
+                    daysCount += 1 'Added: every time we advance 1 day, the counter increments by 1.
+                    Console.WriteLine("Day: " & daysCount)
+                Case "7" 'added to change rep of company
+                    ChangeReputation()
+                Case "8" 'added to process multiple days at once
+                    ProcessMultipleDays()
                 Case "Q"
                     Console.WriteLine("Simulation finished, press Enter to close.")
                     Console.ReadLine()
