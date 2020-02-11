@@ -94,6 +94,60 @@
             Companies(index).AlterReputation(-3)
         End If
     End Sub
+    Public Sub MergeCompanies() 'added to merge 2 companies (!!!need help!!!!)
+        Console.WriteLine("\n******* Merge Companies *********\n")
+        For i = 0 To Companies.Count - 1
+            Console.WriteLine(i & " " & Companies(i).GetName())
+        Next
+        Dim compOneIndex As Integer
+        Dim compTwoIndex As Integer
+        Dim compOne As String
+        Dim compTwo As String
+        Console.WriteLine("Enter first company name")
+        compOne = Console.ReadLine()
+        Try
+            compOneIndex = GetIndexOfCompany(compOne)
+        Catch
+            compOneIndex = -1
+        End Try
+        Dim companyStoreOne As Company
+        companyStoreOne = Companies(compOneIndex)
+        Companies.RemoveAt(compOneIndex)
+        Console.WriteLine()
+        For i = 0 To Companies.Count - 1
+            Console.WriteLine(i & " " & Companies(i).GetName())
+        Next
+        Console.WriteLine("Enter second company name")
+        compTwo = Console.ReadLine()
+        Try
+            compTwoIndex = GetIndexOfCompany(compTwo)
+        Catch
+            compTwoIndex = -1
+        End Try
+        Dim companyStoreTwo As Company
+        companyStoreTwo = Companies(compOneIndex)
+        Companies.RemoveAt(compTwoIndex)
+        Dim mergeCompName As String
+        Console.WriteLine("Enter a new name: ")
+        mergeCompName = Console.ReadLine()
+        Dim comBal As Single = companyStoreOne.GetBalance() + companyStoreTwo.GetBalance()
+        Dim comRep As Single
+        If (companyStoreOne.GetReputationScore() > companyStoreTwo.GetReputationScore()) Then
+            comRep = companyStoreOne.GetReputationScore()
+        Else
+            comRep = companyStoreTwo.GetReputationScore()
+        End If
+        Dim comAvgCost As Single = (companyStoreOne.GetAvgCostPerMeal() + companyStoreTwo.GetAvgCostPerMeal()) / 2
+        Dim comAvgPrice As Single = (companyStoreOne.GetAvgPricePerMeal() + companyStoreTwo.GetAvgPricePerMeal()) / 2
+        Dim comDaily As Single = (companyStoreOne.GetDailyCosts() + companyStoreTwo.GetDailyCosts()) / 2
+        Dim comFuel As Single = (companyStoreOne.GetFuelCostPerUnit() + companyStoreTwo.GetFuelCostPerUnit()) / 2
+        Dim comBase As Single = (companyStoreOne.getBaseCostOfDelivery() + companyStoreTwo.getBaseCostOfDelivery()) / 2
+        Dim X, Y As Integer
+        SimulationSettlement.GetRandomLocation(X, Y)
+        Dim comOutlets As Outlet = companyStoreOne.getOutlets() '!!!!!!!!!how to add outlets??????
+        Dim newCom = New Company(mergeCompName, companyStoreOne.getCategory(), comBal, X, Y, comFuel, comBase)
+        Companies.Add(newCom)
+    End Sub
     Private Sub DisplayCompaniesAtDayEnd()
         Dim Details As String
         Console.WriteLine(Environment.NewLine & "**********************")
@@ -106,6 +160,18 @@
             Console.WriteLine(Details & Environment.NewLine)
         Next
     End Sub
+    Public Function processGoBankruptEvent() 'added for bankrupt event
+        Dim goneBankrupt = False
+        For i = 0 To Companies.Count - 1
+            If Companies(i).isBankrupt() Then
+                Console.WriteLine(Companies(i).getName & " has gone bankrupt and is closing")
+                Companies.Remove(i)
+                i = i - 1
+                goneBankrupt = True
+            End If
+        Next
+        Return goneBankrupt
+    End Function
 
     Private Sub ProcessAddHouseholdsEvent()
         Dim NoOfNewHouseholds As Integer = Int(Rnd() * 4) + 1
@@ -120,8 +186,8 @@
         Dim UpOrDown As Integer = Int(Rnd() * 2)
         Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
         If UpOrDown = 1 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
-            If Me.Companies(CompanyNo).GetFuelCostPerUnit() < FuelCostChange Then
-                UpOrDown = 0
+            If Me.Companies(CompanyNo).GetFuelCostPerUnit() <FuelCostChange Then
+                UpOrDown= 0
             End If
         End If
         If UpOrDown = 0 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
@@ -173,6 +239,7 @@
     End Sub
 
     Private Sub DisplayEventsAtDayEnd()
+        Dim hasEvent As Boolean = False 'added for bankrupty
         Console.WriteLine(Environment.NewLine & "***********************")
         Console.WriteLine("*****   Events:   *****")
         Console.WriteLine("***********************" & Environment.NewLine)
@@ -203,9 +270,15 @@
             If EventRanNo < 0.1 Then 'added for end of the world event happening
                 Dropworld()
             End If
+            If (processGoBankruptEvent()) Then 'added for bankrupty !!check!!
+                hasEvent = True
+            End If
+            If (hasEvent = False) Then 'added for bankrupty !!check!!
+                Console.WriteLine("No events.")
+            End If
         Else
-            Console.WriteLine("No events.")
-        End If
+                Console.WriteLine("No events.")
+            End If
     End Sub
     Sub Dropworld() 'added for end of the world event happening
         Console.WriteLine("Darkrai used black hole eclipse. A quadrillion quadrillion joules of energy was released in two seconds. The world is gone")

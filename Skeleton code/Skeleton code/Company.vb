@@ -71,7 +71,31 @@ Class Company
     Public Sub AlterFuelCostPerUnit(ByVal Change As Single)
         FuelCostPerUnit += Change
     End Sub
-
+    Public Function GetAvgCostPerMeal() 'added for merge
+        Return AvgCostPerMeal
+    End Function
+    Public Function GetDailyCosts() 'added for merge
+        Return DailyCosts
+    End Function
+    Public Function getBaseCostOfDelivery() 'added for merge
+        Return BaseCostOfDelivery
+    End Function
+    Public Function getOutlets() ' added for merge
+        Return Outlets
+    End Function
+    Public Function getCategory() 'added for merge
+        Return Category
+    End Function
+    Public Function GetAvgPricePerMeal() 'added for merge
+        Return AvgPricePerMeal
+    End Function
+    Public Function isBankrupt() 'added for bankrupt
+        If Balance <= -10000 Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     Public Sub AlterReputation(ByVal Change As Single)
         ReputationScore += Change
     End Sub
