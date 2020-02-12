@@ -89,7 +89,7 @@ Class Company
     Public Function GetAvgPricePerMeal() 'added for merge
         Return AvgPricePerMeal
     End Function
-    Public Function isBankrupt() 'added for bankrupt
+    Public Function isBankrupt(Balance) 'added for bankrupt
         If Balance <= -10000 Then
             Return True
         Else
@@ -119,7 +119,13 @@ Class Company
         Next
         Outlets(NearestOutlet).IncrementVisits()
     End Sub
-
+    Public Function processGoBankruptEvent() 'added for bankrupt evenCalculat
+        If Balance < -1000 Then
+            Console.WriteLine(Name & " has gone bankrupt and is closing")
+            Return True
+        End If
+        Return False
+    End Function
     Public Function GetDetails() As String
         Dim Details As String = ""
         Details &= "Name: " & Name & Environment.NewLine & "Type of business: " & Category & Environment.NewLine
@@ -176,6 +182,16 @@ Class Company
         End If
     End Sub
 
+    Public Sub JoinOutlets()
+        'find all the outlets of 1
+
+        'get the details of it
+        'add to array
+        'find all the outlets of 2
+        'get the details of it
+        'add to array
+    End Sub
+
     Public Sub OpenOutlet(ByVal X As Integer, ByVal Y As Integer)
         Dim Capacity As Integer
         If Category = "fast food" Then
@@ -191,7 +207,6 @@ Class Company
         Dim NewOutlet As New Outlet(X, Y, Capacity)
         Outlets.Add(NewOutlet)
     End Sub
-
     Private Function GetListOfOutlets() As ArrayList
         Dim Temp As New ArrayList
         For Current = 0 To Outlets.Count - 1
@@ -199,6 +214,7 @@ Class Company
         Next
         Return Temp
     End Function
+
 
     Private Function GetDistanceBetweenTwoOutlets(ByVal Outlet1 As Integer, ByVal Outlet2 As Integer) As Single
         Return Sqrt((Outlets(Outlet1).GetX() - Outlets(Outlet2).GetX()) ^ 2 + (Outlets(Outlet1).GetY() - Outlets(Outlet2).GetY()) ^ 2)

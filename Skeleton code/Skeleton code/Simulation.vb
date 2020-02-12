@@ -76,6 +76,7 @@
         Console.WriteLine("6. Advance to next day")
         Console.WriteLine("7. Change reputation") 'added to change rep of a company
         Console.WriteLine("8. Process multiple days") 'added to process multiple days
+        Console.WriteLine("9. Merge companies") 'added to process multiple days
         Console.WriteLine("Q. Quit")
         Console.Write(Environment.NewLine & "Enter your choice: ")
     End Sub
@@ -94,7 +95,7 @@
             Companies(index).AlterReputation(-3)
         End If
     End Sub
-    Public Sub MergeCompanies() 'added to merge 2 companies (!!!need help!!!!)
+    Public Sub MergeCompanies() 'added to merge 2 companies (!!!need help with how to store all the outlets!!!!)
         Console.WriteLine("\n******* Merge Companies *********\n")
         For i = 0 To Companies.Count - 1
             Console.WriteLine(i & " " & Companies(i).GetName())
@@ -125,7 +126,7 @@
             compTwoIndex = -1
         End Try
         Dim companyStoreTwo As Company
-        companyStoreTwo = Companies(compOneIndex)
+        companyStoreTwo = Companies(compTwoIndex)
         Companies.RemoveAt(compTwoIndex)
         Dim mergeCompName As String
         Console.WriteLine("Enter a new name: ")
@@ -144,12 +145,16 @@
         Dim comBase As Single = (companyStoreOne.getBaseCostOfDelivery() + companyStoreTwo.getBaseCostOfDelivery()) / 2
         Dim X, Y As Integer
         SimulationSettlement.GetRandomLocation(X, Y)
-        Dim comOutlets As Outlet = companyStoreOne.getOutlets() '!!!!!!!!!how to add outlets??????
+        'how do you add together outlets
         Dim newCom = New Company(mergeCompName, companyStoreOne.getCategory(), comBal, X, Y, comFuel, comBase)
         Companies.Add(newCom)
     End Sub
     Private Sub DisplayCompaniesAtDayEnd()
         Dim Details As String
+        Dim BankRupt As Boolean
+        Dim Index(10) As Integer
+        ' Index(0) = 0
+        Dim count As Integer = 0
         Console.WriteLine(Environment.NewLine & "**********************")
         Console.WriteLine("***** Companies: *****")
         Console.WriteLine("**********************" & Environment.NewLine)
@@ -158,12 +163,22 @@
             Console.WriteLine()
             Details = C.ProcessDayEnd()
             Console.WriteLine(Details & Environment.NewLine)
+            BankRupt = C.processGoBankruptEvent()
+            If BankRupt = True Then
+                Index(count) = GetIndexOfCompany(C.GetName())
+                count = count + 1
+            End If
+        Next
+        For x = 0 To count - 1
+            Dim IndexA As Integer
+            IndexA = Index(x)
+            Companies.RemoveAt(IndexA)
         Next
     End Sub
-    Public Function processGoBankruptEvent() 'added for bankrupt event
+    Public Function processGoBankruptEvent() 'added for bankrupt evenCalculat
         Dim goneBankrupt = False
         For i = 0 To Companies.Count - 1
-            If Companies(i).isBankrupt() Then
+            If Companies(i).isBankrupt(Companies(i).getBalance) Then
                 Console.WriteLine(Companies(i).getName & " has gone bankrupt and is closing")
                 Companies.Remove(i)
                 i = i - 1
@@ -249,30 +264,35 @@
             EventRanNo = Rnd()
             If EventRanNo < 0.25 Then
                 ProcessAddHouseholdsEvent()
+                hasEvent = True
             End If
             EventRanNo = Rnd()
             If EventRanNo < 0.5 Then
                 ProcessCostOfFuelChangeEvent()
+                hasEvent = True
             End If
             EventRanNo = Rnd()
             If EventRanNo < 0.5 Then
                 ProcessReputationChangeEvent()
+                hasEvent = True
             End If
             EventRanNo = Rnd()
             If EventRanNo >= 0.5 Then
                 ProcessCostChangeEvent()
+                hasEvent = True
             End If
             EventRanNo = Rnd() 'added for power outage event happening
             If EventRanNo < 0.1 Then 'added for power outage event happening
                 ProcessPowerOutage()
+                hasEvent = True
             End If
             EventRanNo = Rnd() 'added for end of the world event happening
             If EventRanNo < 0.1 Then 'added for end of the world event happening
                 Dropworld()
             End If
-            If (processGoBankruptEvent()) Then 'added for bankrupty !!check!!
-                hasEvent = True
-            End If
+            'If (processGoBankruptEvent() = True) Then 'added for bankrupty !!check!!
+            '    hasEvent = True
+            'End If
             If (hasEvent = False) Then 'added for bankrupty !!check!!
                 Console.WriteLine("No events.")
             End If
@@ -282,7 +302,6 @@
     End Sub
     Sub Dropworld() 'added for end of the world event happening
         Console.WriteLine("Darkrai used black hole eclipse. A quadrillion quadrillion joules of energy was released in two seconds. The world is gone")
-        Console.ReadLine()
         Stop
     End Sub
     Public Sub ProcessDayEnd()
@@ -488,6 +507,8 @@
                     ChangeReputation()
                 Case "8" 'added to process multiple days at once
                     ProcessMultipleDays()
+                Case "9" 'added to process multiple days at once
+                    MergeCompanies()
                 Case "Q"
                     Console.WriteLine("Simulation finished, press Enter to close.")
                     Console.ReadLine()
