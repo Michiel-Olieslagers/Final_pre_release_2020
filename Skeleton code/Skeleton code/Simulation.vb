@@ -3,6 +3,8 @@
     Protected NoOfCompanies As Integer
     Protected FuelCostPerUnit, BaseCostForDelivery As Single
     Protected Companies As New ArrayList
+    Protected Households As New ArrayList
+    Private brexit As Boolean = False
     'NOTE: FormatCurrency(CalculateDeliveryCost.ToString, 2) CONVERTS INTO CURRENCY FORMAT
     Public Sub New()
         FuelCostPerUnit = 0.0098
@@ -293,6 +295,10 @@
             'If (processGoBankruptEvent() = True) Then 'added for bankrupty !!check!!
             '    hasEvent = True
             'End If
+            EventRanNo = Rnd() 'added for result of brexit destroying the population
+            If EventRanNo < 0.1 Then 'added for result of brexit destroying the population
+                ProcessBrexit()
+            End If
             If (hasEvent = False) Then 'added for bankrupty !!check!!
                 Console.WriteLine("No events.")
             End If
@@ -303,6 +309,15 @@
     Sub Dropworld() 'added for end of the world event happening
         Console.WriteLine("Darkrai used black hole eclipse. A quadrillion quadrillion joules of energy was released in two seconds. The world is gone")
         Stop
+    End Sub
+    Protected Sub ProcessBrexit() 'added cuz brexit
+        If (brexit = False) Then
+            For Each H In Households
+                Console.WriteLine(H.ChangeChanceEatOut(0.3))
+            Next
+            Console.WriteLine("Brexit has reduced how often households will eat out")
+            brexit = True
+        End If
     End Sub
     Public Sub ProcessDayEnd()
         Dim TotalReputation As Single = 0
