@@ -49,6 +49,7 @@
         Console.WriteLine()
     End Sub
 
+
     Public Function FindOutIfHouseholdEatsOut(ByVal HouseholdNo As Integer, ByRef X As Integer, ByRef Y As Integer) As Boolean
         Dim EatOutRNo As Single = Rnd()
         X = Households(HouseholdNo).GetX()
