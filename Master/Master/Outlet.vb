@@ -72,4 +72,8 @@
         Details &= "Visits today: " & VisitsToday.ToString()
         Return Details
     End Function
+
+    Public Sub ExtendCapacity(ByVal Multiple As Integer)
+        MaxCapacity = MaxCapacity * Multiple
+    End Sub
 End Class
