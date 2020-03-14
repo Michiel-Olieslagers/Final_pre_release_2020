@@ -9,6 +9,14 @@
         DailyCosts = MaxCapacityBase * 0.2 + Capacity * 0.5 + 100
         NewDay()
     End Sub
+    Public Sub New(ByVal MaxX As Integer, ByVal MaxY As Integer, ByVal MaxCapacityBase As Integer, ByVal isRandom As Boolean)
+        XCoord = Rnd() * MaxX
+        YCoord = Rnd() * MaxY
+        Capacity = Int(MaxCapacityBase * 0.6)
+        MaxCapacity = MaxCapacityBase + Int(Rnd() * 50) - Int(Rnd() * 50)
+        DailyCosts = MaxCapacityBase * 0.2 + Capacity * 0.5 + 100
+        NewDay()
+    End Sub
 
     Public Function GetCapacity() As Integer
         Return Capacity

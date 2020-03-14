@@ -150,7 +150,7 @@ Class Company
 
     Public Sub OpenOutlet(ByVal X As Integer, ByVal Y As Integer)
         Balance -= OutletCost
-        Dim NewOutlet As New Outlet(X, Y, OutletCapacity)
+        Dim NewOutlet As New Outlet(5, 10, OutletCapacity, True)
         Outlets.Add(NewOutlet)
     End Sub
 
