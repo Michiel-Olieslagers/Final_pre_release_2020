@@ -225,17 +225,21 @@
     End Function
 
     Public Sub ModifyCompany(ByVal Index As Integer)
-        Dim Choice As String
+        Dim Choice As String = ""
         Dim OutletIndex, X, Y As Integer
         Dim CloseCompany As Boolean
-        Console.WriteLine(Environment.NewLine & "*********************************")
-        Console.WriteLine("*******  MODIFY COMPANY   *******")
-        Console.WriteLine("*********************************")
-        Console.WriteLine("1. Open new outlet")
-        Console.WriteLine("2. Close outlet")
-        Console.WriteLine("3. Expand outlet")
-        Console.Write(Environment.NewLine & "Enter your choice: ")
-        Choice = Console.ReadLine()
+        Dim cancel As Boolean = False
+        Do
+            Console.WriteLine(Environment.NewLine & "*********************************")
+            Console.WriteLine("*******  MODIFY COMPANY   *******")
+            Console.WriteLine("*********************************")
+            Console.WriteLine("1. Open new outlet")
+            Console.WriteLine("2. Close outlet")
+            Console.WriteLine("3. Expand outlet")
+            Console.WriteLine("C. Cancel")
+            Console.Write(Environment.NewLine & "Enter your choice: ")
+            Choice = Console.ReadLine()
+        Loop Until Choice = "1" Or Choice = "2" Or Choice = "3" Or Choice = "C"
         Console.WriteLine()
         If Choice = "2" Or Choice = "3" Then
             Console.Write("Enter ID of outlet: ")
@@ -263,6 +267,8 @@
             Else
                 Console.WriteLine("Invalid coordinates.")
             End If
+        ElseIf Choice = "C" Then
+            Console.WriteLine("Operation Cancelled")
         End If
         Console.WriteLine()
     End Sub

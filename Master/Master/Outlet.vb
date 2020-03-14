@@ -70,6 +70,6 @@
             Details &= " "
         Next
         Details &= "Visits today: " & VisitsToday.ToString()
-            Return Details
+        Return Details
     End Function
 End Class
