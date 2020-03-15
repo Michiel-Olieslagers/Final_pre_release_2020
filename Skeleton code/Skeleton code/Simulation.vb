@@ -228,7 +228,14 @@
         End If
         Companies(CompanyNo).AlterReputation(ReputationChange)
     End Sub
-
+    Protected Sub ProcessFoodScandalEvent()
+        Dim ReputationChange As Single = (Int(Rnd() * 9) + 1) / 10
+        Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
+        Console.WriteLine("The reputation of " & Companies(CompanyNo).GetName() & " has gone up by " & ReputationChange.ToString() & " due to food scandal ")
+        ReputationChange *= -1
+        Companies(CompanyNo).AlterReputation(ReputationChange)
+        Companies(CompanyNo).getReputationScore()
+    End Sub
     Private Sub ProcessCostChangeEvent()
         Dim CostToChange As Integer = Int(Rnd() * 2)
         Dim UpOrDown As Integer = Int(Rnd() * 2)
@@ -299,6 +306,10 @@
             If EventRanNo < 0.1 Then 'added for result of brexit destroying the population
                 ProcessBrexit()
             End If
+            EventRanNo = Rnd() 'added for result of food scandal destroying things
+            If EventRanNo < 0.1 Then 'added for result of food scandal destroying things
+                ProcessFoodScandalEvent()
+            End If
             If (hasEvent = False) Then 'added for bankrupty !!check!!
                 Console.WriteLine("No events.")
             End If
@@ -319,6 +330,7 @@
             brexit = True
         End If
     End Sub
+
     Public Sub ProcessDayEnd()
         Dim TotalReputation As Single = 0
         Dim Reputations As New ArrayList
