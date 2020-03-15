@@ -335,6 +335,7 @@
         Dim TotalReputation As Single = 0
         Dim Reputations As New ArrayList
         Dim CompanyRNo, Current, LoopMax, X, Y As Integer
+        Dim days As Integer
         For Each C In Companies
             C.NewDay()
             TotalReputation += C.GetReputationScore()
@@ -342,7 +343,7 @@
         Next
         LoopMax = SimulationSettlement.GetNumberOfHouseholds() - 1
         For Counter = 0 To LoopMax
-            If SimulationSettlement.FindOutIfHouseholdEatsOut(Counter, X, Y) Then
+            If SimulationSettlement.FindOutIfHouseholdEatsOut(Counter, X, Y, days) Then 'added days in parameter to that probabiolity of eating out is lower on mon but higher on fri, sat and sun
                 CompanyRNo = Int(Rnd() * (Int(TotalReputation) + 1))
                 Current = 0
                 While Current < Reputations.Count
