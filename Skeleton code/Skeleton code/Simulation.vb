@@ -229,7 +229,14 @@
         End If
         Companies(CompanyNo).AlterReputation(ReputationChange)
     End Sub
-
+    Protected Sub ProcessFoodScandalEvent()
+        Dim ReputationChange As Single = (Int(Rnd() * 9) + 1) / 10
+        Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
+        Console.WriteLine("The reputation of " & Companies(CompanyNo).GetName() & " has gone up by " & ReputationChange.ToString() & " due to food scandal ")
+        ReputationChange *= -1
+        Companies(CompanyNo).AlterReputation(ReputationChange)
+        Companies(CompanyNo).getReputationScore()
+    End Sub
     Private Sub ProcessCostChangeEvent()
         Dim CostToChange As Integer = Int(Rnd() * 2)
         Dim UpOrDown As Integer = Int(Rnd() * 2)
@@ -300,6 +307,10 @@
             If EventRanNo < 0.1 Then 'added for result of brexit destroying the population
                 ProcessBrexit()
             End If
+            EventRanNo = Rnd() 'added for result of food scandal destroying things
+            If EventRanNo < 0.1 Then 'added for result of food scandal destroying things
+                ProcessFoodScandalEvent()
+            End If
             If (hasEvent = False) Then 'added for bankrupty !!check!!
                 Console.WriteLine("No events.")
             End If
@@ -320,10 +331,12 @@
             brexit = True
         End If
     End Sub
+
     Public Sub ProcessDayEnd()
         Dim TotalReputation As Single = 0
         Dim Reputations As New ArrayList
         Dim CompanyRNo, Current, LoopMax, X, Y As Integer
+        Dim days As Integer
         For Each C In Companies
             C.NewDay()
             TotalReputation += C.GetReputationScore()
@@ -331,7 +344,7 @@
         Next
         LoopMax = SimulationSettlement.GetNumberOfHouseholds() - 1
         For Counter = 0 To LoopMax
-            If SimulationSettlement.FindOutIfHouseholdEatsOut(Counter, X, Y) Then
+            If SimulationSettlement.FindOutIfHouseholdEatsOut(Counter, X, Y, days) Then 'added days in parameter to that probabiolity of eating out is lower on mon but higher on fri, sat and sun
                 CompanyRNo = Int(Rnd() * (Int(TotalReputation) + 1))
                 Current = 0
                 While Current < Reputations.Count
@@ -351,6 +364,7 @@
         Dim checkName As Boolean = True 'Added this variable as a condition for your while loop to stop you from continuing with a name already in use
         Dim Balance, X, Y As Integer
         Dim CompanyName, TypeOfCompany As String
+        Dim randomEvent As Integer 'added to randomly generate a restaurant type
         Dim name As String 'Use the name variable as a holder for the name you're checking your chosen name against in the ArrayList
         While checkName = True 'Add in a while loop to check through the ArrayList of company names to check if the chosen name has already been used
             Console.Write("Enter a name for the company: ")
@@ -367,15 +381,24 @@
         Console.Write("Enter the starting balance for the company: ")
         Balance = Console.ReadLine()
         Do
-            Console.Write("Enter 1 for a fast food company, 2 for a family company or 3 for a named chef company: ")
+            Console.Write("Enter 1 for a fast food company, 2 for a family company, 3 for a named chef company or 4 for random type ")
             TypeOfCompany = Console.ReadLine()
-        Loop Until TypeOfCompany = "1" Or TypeOfCompany = "2" Or TypeOfCompany = "3"
+        Loop Until TypeOfCompany = "1" Or TypeOfCompany = "2" Or TypeOfCompany = "3" Or TypeOfCompany = "4"
         If TypeOfCompany = "1" Then
             TypeOfCompany = "fast food"
         ElseIf TypeOfCompany = "2" Then
             TypeOfCompany = "family"
-        Else
+        ElseIf TypeOfCompany = "3" Then
             TypeOfCompany = "named chef"
+        Else 'added to randomly choose a restaurnat type if not specified by user
+            randomEvent = CInt(Rnd() * 2) + 1
+            If randomEvent = 1 Then
+                TypeOfCompany = "fast food"
+            ElseIf randomEvent = 2 Then
+                TypeOfCompany = "family"
+            Else
+                TypeOfCompany = "named chef"
+            End If
         End If
         SimulationSettlement.GetRandomLocation(X, Y)
         Dim NewCompany As New Company(CompanyName, TypeOfCompany, Balance, X, Y, FuelCostPerUnit, BaseCostForDelivery)
@@ -413,15 +436,18 @@
         Dim Choice As String
         Dim OutletIndex, X, Y As Integer
         Dim CloseCompany As Boolean
-        Console.WriteLine(Environment.NewLine & "*********************************")
-        Console.WriteLine("*******  MODIFY COMPANY   *******")
-        Console.WriteLine("*********************************")
-        Console.WriteLine("1. Open new outlet")
-        Console.WriteLine("2. Close outlet")
-        Console.WriteLine("3. Expand outlet")
-        Console.Write(Environment.NewLine & "Enter your choice: ")
-        Choice = Console.ReadLine()
-        Console.WriteLine()
+        Do
+            Console.WriteLine(Environment.NewLine & "*********************************")
+            Console.WriteLine("*******  MODIFY COMPANY   *******")
+            Console.WriteLine("*********************************")
+            Console.WriteLine("1. Open new outlet")
+            Console.WriteLine("2. Close outlet")
+            Console.WriteLine("3. Expand outlet")
+            Console.WriteLine("C. Cancel")
+            Console.Write(Environment.NewLine & "Enter your choice: ")
+            Choice = Console.ReadLine()
+            Console.WriteLine()
+        Loop Until Choice = "1" Or Choice = "2" Or Choice = "3" Or Choice = "C"
         If Choice = "2" Or Choice = "3" Then
             Console.Write("Enter ID of outlet: ")
             OutletIndex = Console.ReadLine()
@@ -448,6 +474,9 @@
             Else
                 Console.WriteLine("Invalid coordinates.")
             End If
+        Else
+            Console.WriteLine("Operation Cancelled")
+            Stop
         End If
         Console.WriteLine()
     End Sub

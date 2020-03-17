@@ -20,6 +20,10 @@
     Public Function GetChanceEatOut() As Single
         Return ChanceEatOutPerDay
     End Function
+    Public Function ChangeChanceEatOut(ByVal change As Single) As Single
+        ChanceEatOutPerDay = ChanceEatOutPerDay + change
+        Return ChanceEatOutPerDay
+    End Function
 
     Public Function GetX() As Integer
         Return XCoord

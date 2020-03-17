@@ -10,6 +10,14 @@
         DailyCosts = MaxCapacityBase * 0.2 + Capacity * 0.5 + 100
         NewDay()
     End Sub
+    Public Sub New(ByVal MaxX As Integer, ByVal MaxY As Integer, ByVal MaxCapacityBase As Integer, ByVal isRandom As Boolean)
+        Me.XCoord = CInt(Math.Ceiling(Rnd() * MaxX))
+        Me.YCoord = CInt(Math.Ceiling(Rnd() * MaxY))
+        Capacity = Int(MaxCapacityBase * 0.6)
+        MaxCapacity = MaxCapacityBase + Int(Rnd() * 50) - Int(Rnd() * 50)
+        DailyCosts = MaxCapacityBase * 0.2 + Capacity * 0.5 + 100
+        NewDay()
+    End Sub
 
     Public Function GetCapacity() As Integer
         Return Capacity
@@ -22,7 +30,10 @@
     Public Function GetY() As Integer
         Return YCoord
     End Function
-
+    Public Function ExtendCapacity(ByVal perimeter As Integer) As Integer 'added to extend capacity of outlet
+        MaxCapacity = MaxCapacity * perimeter
+        Return MaxCapacity
+    End Function
     Public Sub AlterDailyCost(ByVal Amount As Single) 'changed
         Dim oldAmount As Single = DailyCosts
         DailyCosts += Amount
