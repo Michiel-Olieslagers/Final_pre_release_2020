@@ -100,36 +100,31 @@
     Public Sub MergeCompanies() 'added to merge 2 companies (!!!need help with how to store all the outlets!!!!)
         Console.WriteLine("\n******* Merge Companies *********\n")
         For i = 0 To Companies.Count - 1
-            Console.WriteLine(i & " " & Companies(i).GetName())
+            Console.WriteLine(i + 1 & " " & Companies(i).GetName())
         Next
-        Dim compOneIndex As Integer
-        Dim compTwoIndex As Integer
         Dim compOne As String
         Dim compTwo As String
-        Console.WriteLine("Enter first company name")
+        Console.WriteLine("Enter number of company")
         compOne = Console.ReadLine()
-        Try
-            compOneIndex = GetIndexOfCompany(compOne)
-        Catch
-            compOneIndex = -1
-        End Try
         Dim companyStoreOne As Company
-        companyStoreOne = Companies(compOneIndex)
-        Companies.RemoveAt(compOneIndex)
+        companyStoreOne = Companies(compOne - 1)
         Console.WriteLine()
         For i = 0 To Companies.Count - 1
-            Console.WriteLine(i & " " & Companies(i).GetName())
+            If (i <> compOne) Then
+                Console.WriteLine(i + 1 & " " & Companies(i).GetName())
+            End If
         Next
-        Console.WriteLine("Enter second company name")
+        Console.WriteLine("Enter number of company")
         compTwo = Console.ReadLine()
-        Try
-            compTwoIndex = GetIndexOfCompany(compTwo)
-        Catch
-            compTwoIndex = -1
-        End Try
         Dim companyStoreTwo As Company
-        companyStoreTwo = Companies(compTwoIndex)
-        Companies.RemoveAt(compTwoIndex)
+        companyStoreTwo = Companies(compTwo - 1)
+        If (compOne > compTwo) Then
+            Companies.RemoveAt(compOne)
+            Companies.RemoveAt(compTwo)
+        Else
+            Companies.RemoveAt(compTwo)
+            Companies.RemoveAt(compOne)
+        End If
         Dim mergeCompName As String
         Console.WriteLine("Enter a new name: ")
         mergeCompName = Console.ReadLine()
@@ -145,10 +140,16 @@
         Dim comDaily As Single = (companyStoreOne.GetDailyCosts() + companyStoreTwo.GetDailyCosts()) / 2
         Dim comFuel As Single = (companyStoreOne.GetFuelCostPerUnit() + companyStoreTwo.GetFuelCostPerUnit()) / 2
         Dim comBase As Single = (companyStoreOne.getBaseCostOfDelivery() + companyStoreTwo.getBaseCostOfDelivery()) / 2
-        Dim X, Y As Integer
-        SimulationSettlement.GetRandomLocation(X, Y)
         'how do you add together outlets
-        Dim newCom = New Company(mergeCompName, companyStoreOne.getCategory(), comBal, X, Y, comFuel, comBase)
+        Dim compOutletsOne As ArrayList = companyStoreOne.getOutlets()
+        Dim compOutletsTwo As ArrayList = companyStoreTwo.getOutlets()
+        Dim newCom = New Company(mergeCompName, companyStoreOne.getCategory(), comBal, compOutletsOne(0).GetX(), compOutletsOne(0).GetY(), comFuel, comBase)
+        For i = 1 To companyStoreOne.getOutlets.Count - 1
+            newCom.OpenOutlet(compOutletsOne(i).GetX(), compOutletsOne(i).GetY())
+        Next
+        For i = 0 To companyStoreTwo.getOutlets.Count - 1
+            newCom.OpenOutlet(compOutletsTwo(i).GetX(), compOutletsTwo(i).GetY())
+        Next
         Companies.Add(newCom)
     End Sub
     Private Sub DisplayCompaniesAtDayEnd()
@@ -203,8 +204,8 @@
         Dim UpOrDown As Integer = Int(Rnd() * 2)
         Dim CompanyNo As Integer = Int(Rnd() * Companies.Count)
         If UpOrDown = 1 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
-            If Me.Companies(CompanyNo).GetFuelCostPerUnit() <FuelCostChange Then
-                UpOrDown= 0
+            If Me.Companies(CompanyNo).GetFuelCostPerUnit() < FuelCostChange Then
+                UpOrDown = 0
             End If
         End If
         If UpOrDown = 0 Then 'altered and added 'Add in a separate if statement to change the value of the upordown to 0 if the current fuelcost change is going to result in a negative fuelcostchange
@@ -303,8 +304,8 @@
                 Console.WriteLine("No events.")
             End If
         Else
-                Console.WriteLine("No events.")
-            End If
+            Console.WriteLine("No events.")
+        End If
     End Sub
     Sub Dropworld() 'added for end of the world event happening
         Console.WriteLine("Darkrai used black hole eclipse. A quadrillion quadrillion joules of energy was released in two seconds. The world is gone")
