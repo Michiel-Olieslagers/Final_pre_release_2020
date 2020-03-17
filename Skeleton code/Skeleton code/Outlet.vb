@@ -23,20 +23,26 @@
         Return YCoord
     End Function
 
-    Public Sub AlterDailyCost(ByVal Amount As Single)
+    Public Sub AlterDailyCost(ByVal Amount As Single) 'changed
+        Dim oldAmount As Single = DailyCosts
         DailyCosts += Amount
+        If DailyCosts > 0 Then
+            'daily cost unchanged
+        Else
+            DailyCosts = 0 'idk it this is the right thing but checking that daily cost isn't negative
+        End If
     End Sub
 
     Public Function AlterCapacity(ByVal Change As Integer) As Integer
         Dim OldCapacity As Integer = Capacity
         Capacity += Change
-        If Capacity > MaxCapacity Then
+        If Capacity > MaxCapacity Then 'returns no. people it will allow
             Capacity = MaxCapacity
             Return MaxCapacity - OldCapacity
-        ElseIf Capacity < 0 Then
+        ElseIf Capacity < 0 Then 'error checks
             Capacity = 0
         End If
-        DailyCosts = MaxCapacity * 0.2 + Capacity * 0.5 + 100
+        DailyCosts = MaxCapacity * 0.2 + Capacity * 0.5 + 100 'changes cost depending on capacity
         Return Change
     End Function
 
