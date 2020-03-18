@@ -178,7 +178,7 @@ Class Company
         If Result = Change Then
             Console.WriteLine("Capacity adjusted.")
         Else
-            Console.WriteLine("Only some of that capacity added, outlet now at maximum capacity.")
+            Console.WriteLine("Outlet max capacity expanded.")
         End If
     End Sub
 
@@ -204,7 +204,7 @@ Class Company
             Balance -= NamedChefOutletCost
             Capacity = NamedChefOutletCapacity
         End If
-        Dim NewOutlet As New Outlet(X, Y, Capacity)
+        Dim NewOutlet As New Outlet(5, 10, Capacity, True)
         Outlets.Add(NewOutlet)
     End Sub
     Private Function GetListOfOutlets() As ArrayList
