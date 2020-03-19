@@ -15,26 +15,33 @@
         If Choice = "L" Then
             Dim ExtraX, ExtraY, ExtraHouseholds As Integer
             Console.Write("Enter additional amount to add to X size of settlement: ")
-            ExtraX = Console.ReadLine()
+            Do
+                ExtraX = Console.ReadLine()
+            Loop Until (ExtraX > 0)
             Console.Write("Enter additional amount to add to Y size of settlement: ")
-            ExtraY = Console.ReadLine()
+            Do
+                ExtraY = Console.ReadLine()
+            Loop Until (ExtraY > 0)
             Console.Write("Enter additional number of households to add to settlement: ")
-            ExtraHouseholds = Console.ReadLine()
+            Do
+                ExtraHouseholds = Console.ReadLine()
+            Loop Until (ExtraHouseholds > 0)
             SimulationSettlement = New LargeSettlement(ExtraX, ExtraY, ExtraHouseholds)
         ElseIf Choice = "S" Then 'added else if for small settlement
-            Dim reducexby As Integer = 1001
-            Dim reduceyby As Integer = 1001
-            Dim reducehousingby As Integer = 251
-            While reducexby >= 1000 Or reduceyby >= 1000 Or reducehousingby >= 250
-                Console.WriteLine("X & Y cannot be reduced by more than 999 and Housing cannot be reduced by more than 249.")
-                Console.WriteLine("Please enter how much you would like to reduce the X size by: ")
-                reducexby = Console.ReadLine()
-                Console.WriteLine("Please enter how much you would like to reduce the Y size by: ")
-                reduceyby = Console.ReadLine()
-                Console.WriteLine("Please enter how much you would like to reduce the number of houses by: ")
-                reducehousingby = Console.ReadLine()
-            End While
-            SimulationSettlement = New SmallSettlement(reducexby, reduceyby, reducehousingby)
+            Dim reduceXBy, reduceYBy, reduceHousingBy As Integer
+            Console.Write("Enter amount to remove from X size of settlement: ")
+            Do
+                reduceXBy = Console.ReadLine()
+            Loop Until (reduceXBy > 0)
+            Console.Write("Enter amount to remove from Y size of settlement: ")
+            Do
+                reduceYBy = Console.ReadLine()
+            Loop Until (reduceYBy > 0)
+            Console.Write("Enter number of households remove from settlement: ")
+            Do
+                reduceHousingBy = Console.ReadLine()
+            Loop Until (reduceHousingBy > 0)
+            SimulationSettlement = New SmallSettlement(reduceXBy, reduceYBy, reduceHousingBy)
         Else
             SimulationSettlement = New Settlement()
         End If
@@ -380,7 +387,7 @@
         Else
             TypeOfCompany = "named chef"
         End If
-            SimulationSettlement.GetRandomLocation(X, Y)
+        SimulationSettlement.GetRandomLocation(X, Y)
         Dim NewCompany As New Company(CompanyName, TypeOfCompany, Balance, X, Y, FuelCostPerUnit, BaseCostForDelivery)
         Companies.Add(NewCompany)
     End Sub
