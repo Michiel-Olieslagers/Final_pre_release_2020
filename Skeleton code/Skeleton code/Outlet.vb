@@ -11,13 +11,6 @@
         NewDay()
     End Sub
 
-    Public Sub New(ByVal MaxX As Integer, ByVal MaxY As Integer, ByVal MaxCapacityBase As Integer, ByVal IsRandom As Boolean)
-        XCoord = Int(Rnd() * MaxX)
-        YCoord = Int(Rnd() * MaxY)
-        Capacity = Int(MaxCapacityBase * 0.6)
-        MaxCapacity = MaxCapacityBase + Int(Rnd() * 50) - Int(Rnd() * 50)
-        DailyCosts = MaxCapacityBase * 0.2 + Capacity * 0.5 + 100
-    End Sub
     Public Function GetCapacity() As Integer
         Return Capacity
     End Function
@@ -30,36 +23,20 @@
         Return YCoord
     End Function
 
-    Public Sub AlterDailyCost(ByVal Amount As Single) 'changed
-        Dim oldAmount As Single = DailyCosts
+    Public Sub AlterDailyCost(ByVal Amount As Single)
         DailyCosts += Amount
-        If DailyCosts > 0 Then
-            'daily cost unchanged
-        Else
-            DailyCosts = 0 'idk it this is the right thing but checking that daily cost isn't negative
-        End If
     End Sub
 
     Public Function AlterCapacity(ByVal Change As Integer) As Integer
         Dim OldCapacity As Integer = Capacity
         Capacity += Change
-        If Capacity > MaxCapacity Then 'returns no. people it will allow
-            Dim number As Decimal = Rnd()
-            If (number > 0.75) Then
-                ExtendCapacity(4)
-            ElseIf (number > 0.4) Then
-                ExtendCapacity(4)
-            Else
-                ExtendCapacity(4)
-            End If
-            If (Capacity > MaxCapacity) Then
-                Capacity = MaxCapacity
-            End If
-            Return -1
-            ElseIf Capacity < 0 Then 'error checks
-                Capacity = 0
+        If Capacity > MaxCapacity Then
+            Capacity = MaxCapacity
+            Return MaxCapacity - OldCapacity
+        ElseIf Capacity < 0 Then
+            Capacity = 0
         End If
-        DailyCosts = MaxCapacity * 0.2 + Capacity * 0.5 + 100 'changes cost depending on capacity
+        DailyCosts = MaxCapacity * 0.2 + Capacity * 0.5 + 100
         Return Change
     End Function
 
@@ -81,7 +58,4 @@
         Details &= MaxCapacity.ToString() & "      Daily Costs: " & DailyCosts.ToString() & "      Visits today: " & VisitsToday.ToString()
         Return Details
     End Function
-    Public Sub ExtendCapacity(ByVal numMultiplier As Integer)
-        MaxCapacity = MaxCapacity * numMultiplier
-    End Sub
 End Class
