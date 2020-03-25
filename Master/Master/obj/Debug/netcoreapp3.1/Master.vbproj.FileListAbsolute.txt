@@ -1,0 +1,12 @@
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.exe
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.dll.config
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.deps.json
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.runtimeconfig.json
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.runtimeconfig.dev.json
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.dll
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\bin\Debug\netcoreapp3.1\Master.pdb
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\obj\Debug\netcoreapp3.1\Master.vbprojAssemblyReference.cache
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\obj\Debug\netcoreapp3.1\Master.AssemblyInfoInputs.cache
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\obj\Debug\netcoreapp3.1\Master.AssemblyInfo.vb
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\obj\Debug\netcoreapp3.1\Master.dll
+C:\Users\Michiel\Documents\GitHub\Final_pre_release_2020\Master\Master\obj\Debug\netcoreapp3.1\Master.pdb

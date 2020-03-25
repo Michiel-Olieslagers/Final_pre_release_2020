@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Roshn\\.nuget\\packages\\": {}
+    "C:\\Users\\Michiel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Roshn\\OneDrive\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
+      "projectUniqueName": "C:\\Users\\Michiel\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
       "projectName": "Master",
-      "projectPath": "C:\\Users\\Roshn\\OneDrive\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
-      "packagesPath": "C:\\Users\\Roshn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Roshn\\OneDrive\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\obj\\",
+      "projectPath": "C:\\Users\\Michiel\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
+      "packagesPath": "C:\\Users\\Michiel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Michiel\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Roshn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Michiel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -58,7 +58,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
