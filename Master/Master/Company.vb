@@ -129,19 +129,28 @@ Class Company
 
     Public Sub ExpandOutlet(ByVal ID As Integer)
         Dim Change, Result As Integer
+        Dim Chance As Decimal
         Console.Write("Enter amount you would like to expand the capacity by: ")
         Change = Console.ReadLine()
         Result = Outlets(ID).AlterCapacity(Change)
         If Result = Change Then
             Console.WriteLine("Capacity adjusted.")
         Else
-            Console.WriteLine("Only some of that capacity added, outlet now at maximum capacity.")
+            Chance = Rnd()
+            If Chance >= 0.0 And Chance < 0.4 Then
+                Outlets(ID).ExtendCapacity(2)
+            ElseIf Chance >= 0.4 And Chance < 0.75 Then
+                Outlets(ID).ExtendCapacity(3)
+            ElseIf Chance >= 0.75 And Chance < 1.0 Then
+                Outlets(ID).ExtendCapacity(4)
+            End If
+            Console.WriteLine("Outlet max capacity expanded")
         End If
     End Sub
 
     Public Sub OpenOutlet(ByVal X As Integer, ByVal Y As Integer)
         Balance -= OutletCost
-        Dim NewOutlet As New Outlet(X, Y, OutletCapacity)
+        Dim NewOutlet As New Outlet(5, 10, OutletCapacity, True)
         Outlets.Add(NewOutlet)
     End Sub
 

@@ -194,20 +194,31 @@
     Public Sub AddCompany()
         Dim Balance, X, Y As Integer
         Dim CompanyName, TypeOfCompany As String
+        Dim num As Integer
         Console.Write("Enter a name for the company: ")
         CompanyName = Console.ReadLine()
         Console.Write("Enter the starting balance for the company: ")
         Balance = Console.ReadLine()
         Do
-            Console.Write("Enter 1 for a fast food company, 2 for a family company or 3 for a named chef company: ")
+            Console.Write("Enter 1 for a fast food company, 2 for a family company, 3 for a named chef company or 4 for a random company type: ")
             TypeOfCompany = Console.ReadLine()
-        Loop Until TypeOfCompany = "1" Or TypeOfCompany = "2" Or TypeOfCompany = "3"
+        Loop Until TypeOfCompany = "1" Or TypeOfCompany = "2" Or TypeOfCompany = "3" Or TypeOfCompany = "4"
         If TypeOfCompany = "1" Then
             TypeOfCompany = "fast food"
         ElseIf TypeOfCompany = "2" Then
             TypeOfCompany = "family"
-        Else
+        ElseIf TypeOfCompany = "3" Then
             TypeOfCompany = "named chef"
+        ElseIf TypeOfCompany = "4" Then
+            num = Int(Rnd() * 3 + 1)
+            Select Case num
+                Case 1
+                    TypeOfCompany = "fast food"
+                Case 2
+                    TypeOfCompany = "family"
+                Case 3
+                    TypeOfCompany = "named chef"
+            End Select
         End If
         SimulationSettlement.GetRandomLocation(X, Y)
         Dim NewCompany As New Company(CompanyName, TypeOfCompany, Balance, X, Y, FuelCostPerUnit, BaseCostForDelivery)
@@ -225,17 +236,21 @@
     End Function
 
     Public Sub ModifyCompany(ByVal Index As Integer)
-        Dim Choice As String
+        Dim Choice As String = ""
         Dim OutletIndex, X, Y As Integer
         Dim CloseCompany As Boolean
-        Console.WriteLine(Environment.NewLine & "*********************************")
-        Console.WriteLine("*******  MODIFY COMPANY   *******")
-        Console.WriteLine("*********************************")
-        Console.WriteLine("1. Open new outlet")
-        Console.WriteLine("2. Close outlet")
-        Console.WriteLine("3. Expand outlet")
-        Console.Write(Environment.NewLine & "Enter your choice: ")
-        Choice = Console.ReadLine()
+        Dim cancel As Boolean = False
+        Do
+            Console.WriteLine(Environment.NewLine & "*********************************")
+            Console.WriteLine("*******  MODIFY COMPANY   *******")
+            Console.WriteLine("*********************************")
+            Console.WriteLine("1. Open new outlet")
+            Console.WriteLine("2. Close outlet")
+            Console.WriteLine("3. Expand outlet")
+            Console.WriteLine("C. Cancel")
+            Console.Write(Environment.NewLine & "Enter your choice: ")
+            Choice = Console.ReadLine()
+        Loop Until Choice = "1" Or Choice = "2" Or Choice = "3" Or Choice = "C"
         Console.WriteLine()
         If Choice = "2" Or Choice = "3" Then
             Console.Write("Enter ID of outlet: ")
@@ -263,6 +278,8 @@
             Else
                 Console.WriteLine("Invalid coordinates.")
             End If
+        ElseIf Choice = "C" Then
+            Console.WriteLine("Operation Cancelled")
         End If
         Console.WriteLine()
     End Sub
