@@ -22,8 +22,17 @@
     End Function
 
     Public Sub GetRandomLocation(ByRef X As Integer, ByRef Y As Integer)
-        X = Int(Rnd() * XSize)
-        Y = Int(Rnd() * YSize)
+        Dim done As Boolean
+        Do
+            done = True
+            X = Int(Rnd() * XSize)
+            Y = Int(Rnd() * YSize)
+            For Each H In Households
+                If H.GetX() = X And H.GetY() = Y Then
+                    done = False
+                End If
+            Next
+        Loop Until done = True
     End Sub
 
     Protected Sub CreateHouseholds()

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aleksandr Isaev\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj": {}
+    "C:\\Users\\Aleksandr Isaev\\Desktop\\A Level\\Computer Science\\Final_pre_release_2020\\Master\\Master\\Master.vbproj": {}
   },
   "projects": {
-    "C:\\Users\\Aleksandr Isaev\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj": {
+    "C:\\Users\\Aleksandr Isaev\\Desktop\\A Level\\Computer Science\\Final_pre_release_2020\\Master\\Master\\Master.vbproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aleksandr Isaev\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
+        "projectUniqueName": "C:\\Users\\Aleksandr Isaev\\Desktop\\A Level\\Computer Science\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
         "projectName": "Master",
-        "projectPath": "C:\\Users\\Aleksandr Isaev\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
+        "projectPath": "C:\\Users\\Aleksandr Isaev\\Desktop\\A Level\\Computer Science\\Final_pre_release_2020\\Master\\Master\\Master.vbproj",
         "packagesPath": "C:\\Users\\Aleksandr Isaev\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aleksandr Isaev\\Documents\\GitHub\\Final_pre_release_2020\\Master\\Master\\obj\\",
+        "outputPath": "C:\\Users\\Aleksandr Isaev\\Desktop\\A Level\\Computer Science\\Final_pre_release_2020\\Master\\Master\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
